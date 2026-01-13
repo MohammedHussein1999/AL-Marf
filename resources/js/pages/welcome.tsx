@@ -2,6 +2,7 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Award, BookOpen, TrendingUp, Users } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 export default function Welcome({
     canRegister = true,
@@ -21,58 +22,11 @@ export default function Welcome({
             </Head>
 
             <div
-                className="min-h-screen bg-gradient-to-b from-blue-50 to-white"
+                className="min-h-screen bg-linear-to-b from-blue-50 to-white"
                 dir="rtl"
             >
-                {/* Header Navigation */}
-                <header className="sticky top-0 z-50 bg-white shadow-sm">
-                    <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                        <div className="flex items-center gap-2">
-                            <span className="text-2xl font-bold text-blue-600">
-                                المعارف
-                            </span>
-                            <BookOpen className="h-8 w-8 text-blue-600" />
-                        </div>
-                        <div className="flex items-center gap-4">
-                            {auth.user ? (
-                                <>
-                                    <span className="text-sm text-gray-600">
-                                        مرحباً {auth.user.name}
-                                    </span>
-                                    <Link
-                                        href={
-                                            auth.user.role === 'admin'
-                                                ? '/admin/dashboard'
-                                                : dashboard()
-                                        }
-                                        className="inline-block rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
-                                    >
-                                        {auth.user.role === 'admin'
-                                            ? 'لوحة التحكم'
-                                            : 'لوحتي'}
-                                    </Link>
-                                </>
-                            ) : (
-                                <>
-                                    <Link
-                                        href={login()}
-                                        className="inline-block text-sm font-semibold text-gray-600 hover:text-gray-900"
-                                    >
-                                        تسجيل الدخول
-                                    </Link>
-                                    {canRegister && (
-                                        <Link
-                                            href={register()}
-                                            className="inline-block rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
-                                        >
-                                            التسجيل المجاني
-                                        </Link>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </nav>
-                </header>
+                {/* Navigation Bar with Glassmorphism */}
+                <Navbar auth={auth} />
 
                 {/* Hero Section */}
                 <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
