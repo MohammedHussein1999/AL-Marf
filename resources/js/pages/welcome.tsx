@@ -1,16 +1,18 @@
 ﻿import { dashboard, login, register } from '@/routes';
 import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link,  } from '@inertiajs/react';
 import { Award, BookOpen, TrendingUp, Users } from 'lucide-react';
 import NavigationMenuDemo from './nav';
 // import Navbar from '@/components/Navbar';
+ 
+ 
 
 export default function Welcome({
     canRegister = true,
 }: {
     canRegister?: boolean;
 }) {
-    const { auth } = usePage<SharedData>().props;
+    // const { auth } = usePage<SharedData>().props;
 
     return (
         <>
