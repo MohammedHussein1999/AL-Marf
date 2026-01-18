@@ -5,6 +5,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
+import AuthLayout from './layouts/auth-layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -13,6 +14,9 @@ createInertiaApp({
 
     resolve: (name) => {
         document.documentElement.classList.remove('dark');
+        // const pages = import.meta.glob('./pages/**/*.tsx', { eager: true });
+        // let page = pages[`./pages/${name}.tsx`];
+        // page.default.layout = name.startsWith('public')?undefuined: page=><AuthLayout title={'loging'} />;
       return  resolvePageComponent(
             `./pages/${name}.tsx`,
             import.meta.glob('./pages/**/*.tsx'),

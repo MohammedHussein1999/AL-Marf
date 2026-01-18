@@ -124,17 +124,17 @@ class PublicCourseController extends Controller
         ]);
     }
 
-    public function instructorDetail($id)
-    {
-        $instructor = Instructor::findOrFail($id)
-            ->load(['courses' => function ($query) {
-                $query->where('status', 'active')
-                    ->with(['category', 'enrollments'])
-                    ->withCount('enrollments');
-            }]);
+    // public function instructorDetail($id)
+    // {
+    //     $instructor = Instructor::findOrFail($id)
+    //         ->load(['courses' => function ($query) {
+    //             $query->where('status', 'active')
+    //                 ->with(['category', 'enrollments'])
+    //                 ->withCount('enrollments');
+    //         }]);
 
-        return Inertia::render('InstructorDetail', [
-            'instructor' => $instructor,
-        ]);
-    }
+    //     return Inertia::render('InstructorDetail', [
+    //         'instructor' => $instructor,
+    //     ]);
+    // }
 }

@@ -4,8 +4,8 @@ import { Head, Link,  } from '@inertiajs/react';
 import { Award, BookOpen, TrendingUp, Users } from 'lucide-react';
 import NavigationMenuDemo from './nav';
 // import Navbar from '@/components/Navbar';
- 
- 
+
+
 
 export default function Welcome({
     canRegister = true,
@@ -30,7 +30,7 @@ export default function Welcome({
             >
                 {/* Navigation Bar with Glassmorphism */}
                 {/* <Navbar auth={auth} /> */}
-                <NavigationMenuDemo/>
+                {/* <NavigationMenuDemo/> */}
                 {/* Hero Section */}
                 <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">

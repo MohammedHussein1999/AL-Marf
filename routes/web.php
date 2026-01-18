@@ -20,7 +20,7 @@ Route::get('/', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
-
+Route::inertia('test', 'nav');
 // Public Courses Routes
 Route::prefix('courses')->name('courses.')->group(function () {
     Route::get('/', [PublicCourseController::class, 'index'])->name('index');
@@ -28,40 +28,40 @@ Route::prefix('courses')->name('courses.')->group(function () {
 });
 
 // Public Categories Routes
-Route::prefix('categories')->name('categories.')->group(function () {
-    Route::get('/', [PublicCourseController::class, 'categories'])->name('index');
-    Route::get('{category:slug}', [PublicCourseController::class, 'categoryDetail'])->name('show');
-});
-
-// Public Instructors Routes
-Route::prefix('instructors')->name('instructors.')->group(function () {
-    Route::get('/', [PublicCourseController::class, 'instructors'])->name('index');
-    Route::get('{instructor}', [PublicCourseController::class, 'instructorDetail'])->name('show');
-});
-
-// Public Reviews Route
-Route::get('/reviews', [ReviewsController::class, 'index'])->name('reviews');
-
-// Public Contact Routes
-Route::prefix('contact')->name('contact.')->group(function () {
-    Route::get('/', [ContactController::class, 'index'])->name('index');
-    Route::post('/', [ContactController::class, 'store'])->name('store');
-});
-
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::prefix('categories')->name('categories.')->group(function () {
+        Route::get('/', [PublicCourseController::class, 'categories'])->name('index');
+        Route::get('{category:slug}', [PublicCourseController::class, 'categoryDetail'])->name('show');
+    });
 
-    // Student Dashboard
-    Route::get('student-dashboard', [StudentDashboardController::class, 'index'])->name('student-dashboard');
+    // Public Instructors Routes
+    // Route::prefix('instructors')->name('instructors.')->group(function () {
+    //     Route::get('/', [PublicCourseController::class, 'instructors'])->name('index');
+    //     Route::get('{instructor}', [PublicCourseController::class, 'instructorDetail'])->name('show');
+    // });
 
-    // Student Wallet
-    Route::get('wallet', [WalletController::class, 'index'])->name('wallet');
-});
+    // Public Reviews Route
+    Route::get('/reviews', [ReviewsController::class, 'index'])->name('reviews');
 
-// Admin Routes
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    // Public Contact Routes
+    Route::prefix('contact')->name('contact.')->group(function () {
+        Route::get('/', [ContactController::class, 'index'])->name('index');
+        Route::post('/', [ContactController::class, 'store'])->name('store');
+    });
+
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('dashboard', function () {
+            return Inertia::render('dashboard');
+        })->name('dashboard');
+
+        // Student Dashboard
+        Route::get('student-dashboard', [StudentDashboardController::class, 'index'])->name('student-dashboard');
+
+        // Student Wallet
+        Route::get('wallet', [WalletController::class, 'index'])->name('wallet');
+    });
+
+    // Admin Routes
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

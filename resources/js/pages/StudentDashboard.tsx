@@ -1,5 +1,4 @@
-import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { BookOpen, CheckCircle, Clock, Star } from 'lucide-react';
 import { useState } from 'react';
 
@@ -20,15 +19,45 @@ interface StudentStats {
     averageRating: number;
 }
 
-interface Props {
-    enrolledCourses: EnrolledCourse[];
-    stats: StudentStats;
-}
-
 export default function StudentDashboard() {
-    const page = usePage<SharedData & Props>();
-    const { enrolledCourses, stats } = page.props;
-    const { auth } = page.props;
+    // بيانات ستاتيك
+    const auth = { user: { name: 'محمد علي' } };
+
+    const enrolledCourses: EnrolledCourse[] = [
+        {
+            id: 1,
+            title: 'دورة React',
+            slug: 'learn-react',
+            progress: 40,
+            enrollments_count: 15,
+            instructor: { name: 'أحمد سمير' },
+        },
+        {
+            id: 2,
+            title: 'دورة تصميم واجهات',
+            slug: 'ui-design',
+            progress: 100,
+            enrollments_count: 20,
+            instructor: { name: 'سارة حسين' },
+        },
+        {
+            id: 3,
+            title: 'دورة تسويق رقمي',
+            slug: 'digital-marketing',
+            progress: 70,
+            enrollments_count: 10,
+            instructor: { name: 'محمد علي' },
+        },
+    ];
+
+    const stats: StudentStats = {
+        totalCourses: enrolledCourses.length,
+        completedCourses: enrolledCourses.filter((c) => c.progress === 100)
+            .length,
+        hoursLearned: 120,
+        averageRating: 4.5,
+    };
+
     const [activeTab, setActiveTab] = useState('ongoing');
 
     const ongoingCourses = enrolledCourses.filter((c) => c.progress < 100);
@@ -62,12 +91,10 @@ export default function StudentDashboard() {
                                 الفئات
                             </Link>
                             <div className="flex items-center gap-2 text-gray-600">
-                                <span>{auth.user?.name}</span>
-                                <form method="POST" action="/logout">
-                                    <button className="text-red-600 hover:text-red-700">
-                                        خروج
-                                    </button>
-                                </form>
+                                <span>{auth.user.name}</span>
+                                <button className="text-red-600 hover:text-red-700">
+                                    خروج
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -77,7 +104,7 @@ export default function StudentDashboard() {
                 <section className="bg-gradient-to-r from-blue-600 to-blue-700 py-8 text-white">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <h1 className="mb-2 text-3xl font-bold">
-                            مرحباً {auth.user?.name}
+                            مرحباً {auth.user.name}
                         </h1>
                         <p className="text-lg opacity-90">
                             استمر في رحلتك التعليمية معنا
@@ -150,9 +177,8 @@ export default function StudentDashboard() {
                     </div>
                 </div>
 
-                {/* Main Content */}
+                {/* Tabs & Courses */}
                 <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-                    {/* Tabs */}
                     <div className="mb-6 rounded-lg bg-white shadow-md">
                         <div className="flex gap-4 border-b px-6 py-4">
                             <button
@@ -177,7 +203,7 @@ export default function StudentDashboard() {
                             </button>
                         </div>
 
-                        {/* Ongoing Courses */}
+                        {/* Courses Content */}
                         {activeTab === 'ongoing' && (
                             <div className="p-6">
                                 {ongoingCourses.length > 0 ? (
@@ -185,15 +211,12 @@ export default function StudentDashboard() {
                                         {ongoingCourses.map((course) => (
                                             <Link
                                                 key={course.id}
-                                                href={`/courses/${course.slug}`}
+                                                href="#"
                                                 className="group flex items-center gap-4 rounded-lg border p-4 transition hover:bg-gray-50"
                                             >
-                                                {/* Thumbnail */}
                                                 <div className="flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-400 to-blue-600">
                                                     <BookOpen className="h-12 w-12 text-white opacity-30" />
                                                 </div>
-
-                                                {/* Content */}
                                                 <div className="flex-1">
                                                     <h3 className="mb-1 text-lg font-bold text-gray-900 transition group-hover:text-blue-600">
                                                         {course.title}
@@ -208,8 +231,6 @@ export default function StudentDashboard() {
                                                             }
                                                         </p>
                                                     )}
-
-                                                    {/* Progress Bar */}
                                                     <div className="flex items-center gap-3">
                                                         <div className="h-2 max-w-xs flex-1 rounded-full bg-gray-200">
                                                             <div
@@ -224,8 +245,6 @@ export default function StudentDashboard() {
                                                         </span>
                                                     </div>
                                                 </div>
-
-                                                {/* Button */}
                                                 <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">
                                                     متابعة
                                                 </button>
@@ -249,7 +268,6 @@ export default function StudentDashboard() {
                             </div>
                         )}
 
-                        {/* Completed Courses */}
                         {activeTab === 'completed' && (
                             <div className="p-6">
                                 {completedCourses.length > 0 ? (
@@ -257,15 +275,12 @@ export default function StudentDashboard() {
                                         {completedCourses.map((course) => (
                                             <Link
                                                 key={course.id}
-                                                href={`/courses/${course.slug}`}
+                                                href="#"
                                                 className="group flex items-center gap-4 rounded-lg border p-4 transition hover:bg-gray-50"
                                             >
-                                                {/* Thumbnail */}
                                                 <div className="flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-green-400 to-green-600">
                                                     <CheckCircle className="h-12 w-12 text-white" />
                                                 </div>
-
-                                                {/* Content */}
                                                 <div className="flex-1">
                                                     <h3 className="mb-1 text-lg font-bold text-gray-900 transition group-hover:text-blue-600">
                                                         {course.title}
@@ -284,8 +299,6 @@ export default function StudentDashboard() {
                                                         مكتملة بنسبة 100%
                                                     </span>
                                                 </div>
-
-                                                {/* Certificate */}
                                                 <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-700">
                                                     الشهادة
                                                 </button>

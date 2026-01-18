@@ -1,22 +1,31 @@
-import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, BookOpen, Grid3x3 } from 'lucide-react';
 
-interface Category {
-    id: number;
-    name: string;
-    slug: string;
-    icon: string | null;
-    courses_count: number;
-}
-
-interface Props {
-    categories: Category[];
-}
-
 export default function PublicCategories() {
-    const page = usePage<SharedData & Props>();
-    const { categories } = page.props;
+    // بيانات ستاتيك للاختبار
+    const categories = [
+        {
+            id: 1,
+            name: 'تطوير الويب',
+            slug: 'web-dev',
+            icon: 'code',
+            courses_count: 5,
+        },
+        {
+            id: 2,
+            name: 'التصميم',
+            slug: 'design',
+            icon: 'design',
+            courses_count: 3,
+        },
+        {
+            id: 3,
+            name: 'الأعمال',
+            slug: 'business',
+            icon: 'business',
+            courses_count: 4,
+        },
+    ];
 
     const getCategoryIcon = (icon: string | null) => {
         const iconMap: { [key: string]: string } = {
@@ -91,25 +100,18 @@ export default function PublicCategories() {
                                     href={`/categories/${category.slug}`}
                                     className="group flex flex-col items-center rounded-lg bg-white p-8 text-center shadow-md transition hover:shadow-lg"
                                 >
-                                    {/* Icon */}
                                     <div className="mb-4 text-6xl transition group-hover:scale-110">
                                         {getCategoryIcon(category.icon)}
                                     </div>
-
-                                    {/* Title */}
                                     <h3 className="mb-2 text-2xl font-bold text-gray-900">
                                         {category.name}
                                     </h3>
-
-                                    {/* Courses Count */}
                                     <p className="mb-4 text-gray-600">
                                         <span className="font-bold text-blue-600">
                                             {category.courses_count}
                                         </span>{' '}
                                         دورة
                                     </p>
-
-                                    {/* Learn More */}
                                     <div className="mt-auto flex items-center gap-2 pt-4 font-semibold text-blue-600 transition group-hover:gap-3">
                                         اكتشف الدورات
                                         <ArrowLeft className="h-4 w-4" />
@@ -126,22 +128,6 @@ export default function PublicCategories() {
                         </div>
                     )}
                 </div>
-
-                {/* CTA Section */}
-                <section className="mt-12 bg-blue-50 py-12">
-                    <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-                        <h2 className="mb-4 text-3xl font-bold">جاهز للبدء؟</h2>
-                        <p className="mb-6 text-lg text-gray-600">
-                            اختر أي دورة من اختيارك وابدأ رحلتك التعليمية الآن
-                        </p>
-                        <Link
-                            href="/courses"
-                            className="inline-block rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700"
-                        >
-                            استكشف جميع الدورات
-                        </Link>
-                    </div>
-                </section>
             </div>
         </>
     );

@@ -1,5 +1,4 @@
-import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { BookOpen, MessageSquare, Search, Star } from 'lucide-react';
 import { useState } from 'react';
 
@@ -13,15 +12,42 @@ interface Review {
     approved: boolean;
 }
 
-interface Props {
-    reviews: Review[];
-    averageRating: number;
-    totalReviews: number;
-}
-
 export default function Reviews() {
-    const page = usePage<SharedData & Props>();
-    const { reviews, averageRating, totalReviews } = page.props;
+    // بيانات ستاتيك
+    const reviews: Review[] = [
+        {
+            id: 1,
+            user: { name: 'محمد علي', email: 'mohammed@example.com' },
+            course: { title: 'دورة React', slug: 'learn-react' },
+            rating: 5,
+            comment: 'دورة ممتازة وسهلة الفهم.',
+            created_at: '2026-01-10',
+            approved: true,
+        },
+        {
+            id: 2,
+            user: { name: 'أحمد سمير', email: 'ahmed@example.com' },
+            course: { title: 'دورة تصميم واجهات', slug: 'ui-design' },
+            rating: 4,
+            comment: 'محتوى رائع لكن يحتاج مزيد من الأمثلة العملية.',
+            created_at: '2026-01-12',
+            approved: true,
+        },
+        {
+            id: 3,
+            user: { name: 'سارة حسين', email: 'sara@example.com' },
+            course: { title: 'دورة تسويق رقمي', slug: 'digital-marketing' },
+            rating: 3,
+            comment: 'متوسطة، بعض المواضيع غير واضحة.',
+            created_at: '2026-01-15',
+            approved: false,
+        },
+    ];
+
+    const averageRating =
+        reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length;
+    const totalReviews = reviews.length;
+
     const [searchValue, setSearchValue] = useState('');
     const [filterRating, setFilterRating] = useState<number | null>(null);
 
@@ -35,20 +61,21 @@ export default function Reviews() {
         return matchesSearch && matchesRating;
     });
 
-    const ratingDistribution = [5, 4, 3, 2, 1].map((rating) => ({
-        rating,
-        count: reviews.filter((r) => r.rating === rating).length,
-        percentage:
-            (reviews.filter((r) => r.rating === rating).length / totalReviews) *
-            100,
-    }));
+    const ratingDistribution = [5, 4, 3, 2, 1].map((rating) => {
+        const count = reviews.filter((r) => r.rating === rating).length;
+        return {
+            rating,
+            count,
+            percentage: (count / totalReviews) * 100,
+        };
+    });
 
     return (
         <>
             <Head title="آراء العملاء - أكاديمية المعارف" />
 
             <div className="min-h-screen bg-gray-50" dir="rtl">
-                {/* Glassmorphism Navigation */}
+                {/* Navigation */}
                 <nav className="sticky top-0 z-50 border-b border-white/20 bg-white/30 shadow-sm backdrop-blur-md">
                     <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
                         <Link href="/" className="flex items-center gap-2">
@@ -81,7 +108,6 @@ export default function Reviews() {
                 <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                     {/* Rating Overview */}
                     <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-                        {/* Average Rating */}
                         <div className="rounded-lg bg-white p-8 text-center shadow-md">
                             <div className="mb-2 text-5xl font-bold text-blue-600">
                                 {averageRating.toFixed(1)}
@@ -101,7 +127,6 @@ export default function Reviews() {
                             <p className="text-gray-600">متوسط التقييم</p>
                         </div>
 
-                        {/* Total Reviews */}
                         <div className="rounded-lg bg-white p-8 text-center shadow-md">
                             <div className="mb-2 text-5xl font-bold text-green-600">
                                 {totalReviews}
@@ -109,7 +134,6 @@ export default function Reviews() {
                             <p className="text-gray-600">تقييم كلي</p>
                         </div>
 
-                        {/* Satisfaction Rate */}
                         <div className="rounded-lg bg-white p-8 text-center shadow-md">
                             <div className="mb-2 text-5xl font-bold text-orange-600">
                                 {(
@@ -220,7 +244,6 @@ export default function Reviews() {
                                     key={review.id}
                                     className="rounded-lg bg-white p-6 shadow-md transition hover:shadow-lg"
                                 >
-                                    {/* Header */}
                                     <div className="mb-4 flex items-start justify-between">
                                         <div>
                                             <p className="font-bold text-gray-900">
@@ -253,13 +276,9 @@ export default function Reviews() {
                                             </p>
                                         </div>
                                     </div>
-
-                                    {/* Comment */}
                                     <p className="leading-relaxed text-gray-700">
                                         {review.comment}
                                     </p>
-
-                                    {/* Status */}
                                     {!review.approved && (
                                         <div className="mt-4 inline-block rounded-lg bg-orange-50 px-3 py-2 text-xs text-orange-600">
                                             قيد المراجعة
